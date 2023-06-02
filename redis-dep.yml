@@ -11,15 +11,17 @@ spec:
   selector:
     matchLabels:
       name: redis-pod
-      app:  demo-voting-app
+      app: demo-voting-app
   template:
     metadata:
       labels:
         name: redis-pod
-        app:  demo-voting-app
+        app: demo-voting-app
     spec:
       containers:
       - name: redis
         image: redis:latest
         ports:
-         - containerPort: 6379
+        - containerPort: 6379
+        securityContext:
+          runAsUser: 1001
