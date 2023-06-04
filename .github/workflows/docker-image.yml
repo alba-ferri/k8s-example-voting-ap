@@ -45,15 +45,27 @@ jobs:
           echo "sysdig-cli-scanner latest version already downloaded"
         fi
 
-    - name: Scan image
-      uses: sysdiglabs/scan-action@v3
-      id: scan
-      with:
-        image-tag: "redis-ax-${{ github.run_number }}"
-        sysdig-secure-token: ${{ secrets.SYSDIG_SECURE_TOKEN }}
-        sysdig-secure-url: "https://eu1.app.sysdig.com" 
-        run-as-user: root
-        input-type: docker-daemon 
+    - name: Scan the image using sysdig-cli-scanner
+      env:
+        SECURE_API_TOKEN: ${{ secrets.SECURE_API_TOKEN }}
+      run: |
+        ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner \
+          --apiurl "https://eu1.app.sysdig.com" \
+          "redis-ax-${{ github.run_number }}" \
+          --console-log \
+          --dbpath=${GITHUB_WORKSPACE}/cache/db/ \
+          --cachepath=${GITHUB_WORKSPACE}/cache/scanner-cache/
+
+
+#    - name: Scan image
+#      uses: sysdiglabs/scan-action@v3
+#      id: scan
+#      with:
+#        image-tag: "redis-ax-${{ github.run_number }}"
+#        sysdig-secure-token: ${{ secrets.SYSDIG_SECURE_TOKEN }}
+#        sysdig-secure-url: "https://eu1.app.sysdig.com" 
+#        run-as-user: root
+#        input-type: docker-daemon 
 
     - name: Upload Sarif-file
       uses: github/codeql-action/upload-sarif@v2
