@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file redis/Dockerfile --tag redis-ax-${{ github.run_number }}
+      run: docker build . --file redis/Dockerfile --tag "${{ secrets.ECR_REGISTRY }}/tech-ax:redis-${{ github.run_number }}"
 
     - name: Setup cache
       uses: actions/cache@v3
@@ -71,7 +71,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }} 
         ECR_REPOSITORY: tech-ax
-        IMAGE_TAG: "redis-ax-${{ github.run_number }}"
+        IMAGE_TAG: "redis-${{ github.run_number }}"
       run: |
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
