@@ -16,4 +16,16 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file redis/Dockerfile --tag redis-ax:$(date +%s)
+    - name: Scan image
+      uses: sysdiglabs/scan-action@v3
+      id: scan
+      with:
+#        image-tag: "845151661675.dkr.ecr.eu-west-2.amazonaws.com/mi-vuln-app:scanned-${{ github.run_number }}"
+        sysdig-secure-token: ${{ secrets.SYSDIG_SECURE_TOKEN }}
+        run-as-user: root
+        input-type: docker-daemon 
 
+    - uses: github/codeql-action/upload-sarif@v1
+      if: ${{ always() }} 
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarifReport }}
