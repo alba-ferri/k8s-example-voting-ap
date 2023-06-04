@@ -51,7 +51,7 @@ jobs:
       run: |
         ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner \
           --apiurl "https://eu1.app.sysdig.com" \
-          "redis-ax-${{ github.run_number }}" \
+          "${{ secrets.ECR_REGISTRY }}/tech-ax:redis-${{ github.run_number }}"\
           --console-log \
           --dbpath=${GITHUB_WORKSPACE}/cache/db/ \
           --cachepath=${GITHUB_WORKSPACE}/cache/scanner-cache/
