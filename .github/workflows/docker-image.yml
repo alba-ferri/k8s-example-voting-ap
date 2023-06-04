@@ -56,19 +56,9 @@ jobs:
           --dbpath=${GITHUB_WORKSPACE}/cache/db/ \
           --cachepath=${GITHUB_WORKSPACE}/cache/scanner-cache/
 
-
-#    - name: Scan image
-#      uses: sysdiglabs/scan-action@v3
-#      id: scan
+#Does this work anymore?
+#    - name: Upload Sarif-file
+#      uses: github/codeql-action/upload-sarif@v2
+#      if: ${{ always() }} 
 #      with:
-#        image-tag: "redis-ax-${{ github.run_number }}"
-#        sysdig-secure-token: ${{ secrets.SYSDIG_SECURE_TOKEN }}
-#        sysdig-secure-url: "https://eu1.app.sysdig.com" 
-#        run-as-user: root
-#        input-type: docker-daemon 
-
-    - name: Upload Sarif-file
-      uses: github/codeql-action/upload-sarif@v2
-      if: ${{ always() }} 
-      with:
-        sarif_file: results.sarif 
+#        sarif_file: results.sarif 
