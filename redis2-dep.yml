@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: voting-app
+  name: redis-pod
+  labels:
+    name: redis-pod
+    app: demo-voting-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: redis-pod
+      app: demo-voting-app
+  template:
+    metadata:
+      labels:
+        name: redis-pod
+        app: demo-voting-app
+    spec:
+      containers:
+      - name: redis
+        image: 845151661675.dkr.ecr.eu-west-3.amazonaws.com/tech-ax:redis-23 
+        ports:
+        - containerPort: 6379
+        securityContext:
+          runAsUser: 1001
